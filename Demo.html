@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <title>BCG</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <style type="text/css">
+        	body {
+                font: 16px "Titillium Web", sans-serif;
+                margin: 0;
+            }
+            .btnSubmit{
+                background: #1F6521 url(http://i.imgur.com/RWKrr8S.png);
+                background-repeat: no-repeat;
+                background-position: 2em 50%;
+                background-size: 2em;
+                border: 0;
+                border-radius: 4px;
+                cursor: pointer;
+                color: #FFF;
+                font-weight: bold;
+                font-size: 13px;
+                padding: 2em 4em;
+                padding-left: 8em;
+                text-transform: uppercase;
+            }
+            .btnSubmit:hover {
+                background-color: #A4A71E;
+                background-size: 3em;
+                background-position: 1.5em 50%;
+            }
+        </style>
+        <script type="text/javascript">
+            var baseUrl = "https://interns.bcgdvsydney.com";
+            var name = "Krishna Hingu";
+            var email = "krishnahingu2518@gmail.com";
+
+        	function getApiKey() {
+        		$.ajax({
+                    type: "GET",  
+                    url: baseUrl + "/api/v1/key",
+                    success: function(data) {
+                        if(data.status = 201){
+                            //var data1 = JSON.stringify(data);
+                            var key = data.key;
+                            console.log("Key ===> "+key);
+                            submitApplication(key);
+                        }else{
+                            alert("Something went wrong. Please try again.");
+                        }
+                    },
+                    error: function(e) {
+                    	alert("Something went wrong. Please try again.");
+                    	console.log("error:: "+e);
+                    }
+                }); 
+        	}
+
+            function submitApplication(key) {
+                var data = { "name": "Krishna Hingu", "email": "krishnahingu2518@gmail.com"}
+                $.ajax({
+                    type: "POST",  
+                    url: baseUrl + "/api/v1/submit?apiKey="+key,
+                    data: JSON.stringify(data),
+                    dataType: "json", 
+                    success: function(data) {
+                        if(data.status = 202){
+                            var data1 = JSON.stringify(data);
+                            console.log("data ===> "+data1);
+                            alert("Thank you so much for your request. We will get back to you soon.");
+                        }else{
+                            alert("Something went wrong. Please try again.");
+                        }
+                    },
+                    error: function(e) {
+                        alert("Something went wrong. Please try again.");
+                        console.log("error:: "+e);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+    	<div class="submit_app">
+            <button class="btnSubmit" onclick="getApiKey();">Submit Application</button>
+        </div>
+    </body>
+</html>
